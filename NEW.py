@@ -1,6 +1,9 @@
 from selenium import webdriver
 import pandas as pd
 
+with open('job_scraping.csv', 'w', encoding='utf8',newline="") as file:
+    file.write("Roller Coasters; Type; Design; Status; Opened \n")
+
 driver = webdriver.Chrome()
 driver.get('https://rcdb.com/r.htm?ot=2')
 
@@ -14,13 +17,10 @@ opened = driver.find_elements("xpath", "//div[@class='stdtbl rer']/table/tbody/t
 
 result=[]
 
-for i in range(len(type)):
-    temp_data={'Roller Coaster': roller_coasters[i].text,
-               'Type': type[i].text,
-               'Design': design[i].text,
-               'Status': status[i].text,
-               'Opened': opened[i].text}
-    result.append(temp_data)
-
-df_data=pd.DataFrame(result)
-print(df_data)
+with open('job_scraping.csv', 'a', encoding='utf8',newline="") as file:
+    for i in range(len(type)):
+      file.write(roller_coasters[i].text + ";" +
+                   type[i].text + ";" +
+                    design[i].text + ";" +
+                    status[i].text + ";" +
+                    opened[i].text + "\n")
